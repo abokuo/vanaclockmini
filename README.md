@@ -2,7 +2,9 @@
     
 ## 說明
 作者：A-Bo Lee (https://abo.tw)
+
 遵循 ES6 語法規定，為了讀取輕量化僅使用 CSS 語法，再匯入 Google 雲端字型美化。
+
 運作參考：えふえふじゅういち時間 JavaScript版 
                                                 Copyright (c) 2004 by koji27
                                               http://www.koji27.com/soft/ft/
@@ -22,4 +24,4 @@ Copyright (c) 2004 by koji27
 http://www.koji27.com/soft/ft/
 
 ## 建議及聯絡
-請恰 abokuo at gmail dot com
+請洽 abokuo at gmail dot com
