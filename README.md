@@ -18,10 +18,5 @@
 7. 將 $vanaPeriodInSecs 加上 Vana'diel 原始時間（以秒計算）獲得 Vana'diel 當前時間（以秒計算）之後以取餘數除法運算得到當前的 Vana'diel 年、月、日、時、分與秒。
 8. 月與日從 1 開始，與電腦計算的初始值：0 不同，因此要換算月與日時需減 1。
 
-## 參考出處
-えふえふじゅういち時間 JavaScript版
-Copyright (c) 2004 by koji27
-http://www.koji27.com/soft/ft/
-
 ## 建議及聯絡
 請洽 abokuo at gmail dot com
