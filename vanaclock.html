@@ -1,0 +1,136 @@
+﻿<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta http-equiv="x-ua-compatible" content="IE=edge">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400">
+
+        <style>
+            body {
+                margin: 0px;
+                padding: 0px;
+                border: 0px;
+                font-family: 'Noto Sans TC', serif;
+            }
+            .vanaclock {
+                position: absolute;
+                width: 100%;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: #ffffff;
+                text-align: center;
+            }
+            .date {
+                padding: 18px;
+                background-color: #ff0000;
+                font-size: 55px;
+            }
+
+            .time {
+                padding: 18px;
+                background-color: #0000ff;
+                font-size: 60px;
+            }
+
+            .weekdaymoon {
+                padding: 18px;
+                background-color: #009900;
+                font-size: 45px;
+            }
+
+        </style>
+        <title>Vana'diel Time</title>
+    </head>
+
+<body>
+    <section>
+	    <div class="vanaclock">
+            <div id="date" class="date"></div>
+            <div id="time" class="time"></div>
+            <div id="weekdaymoon" class="weekdaymoon"></div>
+        </div>
+    </section>
+    </div>
+    <script>
+    /*
+    Vana'diel clock mini JavaScript 簡易版 by A-Bo Lee (https://abo.tw)
+    遵循 ES6 語法規定，為了讀取輕量化僅使用 CSS 語法，再匯入 Google 雲端字型美化。
+    運作參考：えふえふじゅういち時間 JavaScript版 
+                                                Copyright (c) 2004 by koji27
+                                              http://www.koji27.com/soft/ft/
+    基本定義：
+    1. Vana'diel 起始時間為：天晶曆 934 年 8 月 4 日 1800 時
+    2. Vana'diel 一年為 360 日，一日為 24 小時，Vana'diel 的時間流速是地球時間的 25 倍。
+    3. Vana'diel 一週為八日，分別為：火、土、水、風、氷、雷、光、闇。
+    4. Vana'diel 月相每週變換，分為 12 個階段：二十日月、二十六夜、新月、三日月、七日月、上弦の月、
+       十日月、十三夜、満月、十六夜、居待月、下弦の月。
+    5. 與 Vana'diel 初始時間相對應的起始地球時間是 2003 年 12 月 1 日 18:00:01。
+    6. 將當前地球時間減去地球起始時間（加上日本與臺灣的時差一小時加一秒，其他時區請自行轉換），得到的時間換算成秒
+       再乘以 25 就等於 Vana'diel 自起始時間後經過的秒數。
+    7. 將 $vanaPeriodInSecs 加上 Vana'diel 原始時間（以秒計算）獲得 Vana'diel 當前時間（以秒計算）
+       之後以取餘數除法運算得到當前的 Vana'diel 年、月、日、時、分與秒。
+    8. 月與日從 1 開始，與電腦計算的初始值：0 不同，因此要換算月與日時需減 1。
+    */
+
+        const VanaTime = function(){
+
+            // 定義 Vana'diel 週日與月齡
+            const vanaWeekDays = ['火','土','水','風','氷','雷','光','闇'];
+            const vanaMoonPhases = ['二十日月','二十六夜','新月','三日月','七日月','上弦の月','十日月',
+                                    '十三夜','満月','十六夜','居待月','下弦の月'];
+
+            // 取得當前地球時間、定義地球與 Vana'diel 的初始時間，進而求得 Vana'diel 當前時間（以秒為單位）
+            let earthNow = new Date();
+            const earthOriginalTime = new Date(2003, 11, 1, 18, 0, 1);
+            const vavaOriginalTimeInSecs = 934 * (360 * 86400) + (8 - 1) * (30 * 86400) + (4 - 1) * 86400 + 18 * 3600;
+            let vanaPeriodInSecs = ((earthNow.getTime() - earthOriginalTime.getTime()) / 1000 + 3601 ) * 25;
+            let vanaNowInSecs = vavaOriginalTimeInSecs + vanaPeriodInSecs;
+
+            // 取得當前 Vana'diel 週日與月齡
+            let vana_weekday = Math.floor(vanaNowInSecs / 86400) % 8;
+            let vana_moonphase = Math.floor((vanaNowInSecs + 86400 * 2) / (86400 * 7)) % 12;
+
+            // 透過取餘數除法獲得當前 Vana'diel 的年、月、日、時、分與秒。
+            // 為求顯示美觀未達 10 的值前面補零。
+            let vanaYear = Math.floor(vanaNowInSecs / (360 * 86400));
+            let vanaRemainForMonth = vanaNowInSecs % (360 * 86400);
+            let vanaMonth = Math.floor(vanaRemainForMonth / (30 * 86400)) + 1;
+            if (vanaMonth < 10 ) { vanaMonth = '0' + vanaMonth;}
+            let vanaRemainForDay = vanaRemainForMonth % (30 * 86400);
+            let vanaDays = Math.floor(vanaRemainForDay / 86400) + 1;
+            if (vanaDays < 10 ) { vanaDays = '0' + vanaDays;}
+            let vanaRemainForHour = vanaRemainForDay % 86400;
+            let vanaHours = Math.floor(vanaRemainForHour / 3600);
+            if (vanaHours < 10 ) { vanaHours = '0' + vanaHours;}
+            let vanaRemainForMinute = vanaRemainForHour % 3600;
+            let vanaMins = Math.floor(vanaRemainForMinute / 60 );
+            if (vanaMins < 10 ) { vanaMins = '0' + vanaMins;}
+            let vanaRemainForSecond = vanaRemainForMinute % 60;
+            let vanaSecs = Math.floor(vanaRemainForSecond);
+            if (vanaSecs < 10 ) { vanaSecs = '0' + vanaSecs;}
+
+            // 將上述計算結果存入 vanatime 物件，方便其他與 Vana'diel 時間有關的功能（如工會時間表）
+            // 匯入使用。本程式僅定義了物件，並未使用。
+            let vanatime = {
+                year:vanaYear,month:vanaMonth,day:vanaDays,
+                hours:vanaHours,mins:vanaMins,secs:vanaSecs,
+            weekday:vanaWeekDays[vana_weekday],moonphase:vanaMoonPhases[vana_moonphase]
+            };
+
+            // 定義顯示內容：第一列顯示年月日，第二列顯示時與分，第三列顯示曜日及月齡
+            let vdate = `${vanaYear}/${vanaMonth}/${vanaDays}`;
+            let vtime = `${vanaHours}:${vanaMins}`;
+            let vweekdaymoon = `${vanaWeekDays[vana_weekday]}曜日 ${vanaMoonPhases[vana_moonphase]}`;
+
+            document.getElementById('date').textContent = vdate;
+            document.getElementById('time').textContent = vtime;
+            document.getElementById('weekdaymoon').textContent = vweekdaymoon;
+
+            setTimeout(VanaTime, 500);
+        }
+        VanaTime();
+    </script>
+</body>
+</html>
