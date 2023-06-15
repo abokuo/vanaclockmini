@@ -61,10 +61,10 @@
                                                 Copyright (c) 2004 by koji27
                                               http://www.koji27.com/soft/ft/
     基本定義：
-    1. Vana'diel 起始時間為：天晶曆 934 年 8 月 4 日 1800 時
+    1. Vana'diel 起始時間為：天晶曆 934 年 8 月 4 日 1800 時。
     2. Vana'diel 一年為 360 日，一日為 24 小時，Vana'diel 的時間流速是地球時間的 25 倍。
     3. Vana'diel 一週為八日，分別為：火、土、水、風、氷、雷、光、闇。
-    4. Vana'diel 月相每週變換，分為 12 個階段：二十日月、二十六夜、新月、三日月、七日月、上弦の月、
+    4. Vana'diel 月相每七日變換，分為 12 個階段：二十日月、二十六夜、新月、三日月、七日月、上弦の月、
        十日月、十三夜、満月、十六夜、居待月、下弦の月。
     5. 與 Vana'diel 初始時間相對應的起始地球時間是 2003 年 12 月 1 日 18:00:01。
     6. 將當前地球時間減去地球起始時間（加上日本與臺灣的時差一小時加一秒，其他時區請自行轉換），得到的時間換算成秒
@@ -128,7 +128,7 @@
             document.getElementById('time').textContent = vtime;
             document.getElementById('weekdaymoon').textContent = vweekdaymoon;
 
-            setTimeout(VanaTime, 500);
+            setInterval(VanaTime, 500);
         }
         VanaTime();
     </script>
